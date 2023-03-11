@@ -12,27 +12,21 @@ const ageEl = document.querySelector("#age");
 ageEl.textContent = age;
 
 // Dark Mode
-const localTheme = localStorage.getItem("theme");
-const themeSwitch = document.querySelector('#theme-switch');
+const localTheme = localStorage.getItem("theme"),
+    themeSwitch = document.querySelector('#theme-switch'),
+    transitionTime = 0.5;
 
-if (!localTheme) {
-    localStorage.setItem("theme", "dark");
-    document.body.classList.add("dark");
-}
-else if (localTheme === "dark") document.body.classList.add("dark");
-
-const transitionTime = 0.5;
 document.body.style.transition = `background-color ${transitionTime}s ease, color ${transitionTime}s ease`;
 
 const toggleDarkMode = () => {
+    const isDarkMode = document.body.classList.contains("dark");
     document.body.classList.toggle("dark");
+    themeSwitch.checked = !isDarkMode;
     // Save Theme
-    const theme = document.body.classList.contains("dark");
-    localStorage.setItem("theme", theme ? "dark" : "light");
-
-    return theme;
+    localStorage.setItem("theme", isDarkMode ? "light" : "dark");
 };
 
+if (!localTheme || localTheme === "dark") toggleDarkMode();
 themeSwitch.addEventListener('change', () => {
     toggleDarkMode();
 })
